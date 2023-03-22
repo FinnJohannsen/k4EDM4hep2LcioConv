@@ -46,6 +46,15 @@ int main(int argc, char* argv[])
       const auto lcioColl = lcEvent->getCollection(name);
       // TODO: The Frame needs to improve here in order to get to the type
       // without retrieving the collection
+      if (lcioColl->getTypeName() == "LCRelation"){
+
+        const auto& params = lcioColl->getParameters();
+        const auto& fromType = params.getStringVal("FromType");
+        if (fromType.length() == 0){
+          std::cout<<"WARNING: LCRelations "<< name <<" has no 'to' or 'from' set!"<< std::endl;
+          continue;
+       }
+      }
       const auto& type = [&edmEvent, &name]() {
         const auto coll = edmEvent.get(name);
         if (coll) {
